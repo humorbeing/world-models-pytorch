@@ -169,8 +169,8 @@ def train(epoch, sparsity=False, l1_weight=1e-5):
             loss = mse_loss + l1_reg
         else:
             output = model(data)
-            loss = F.binary_cross_entropy_with_logits(output, data)
-            # loss = F.mse_loss(output, data)
+            # loss = F.binary_cross_entropy_with_logits(output, data)
+            loss = F.mse_loss(output, data)
 
         loss.backward()
         optimizer.step()

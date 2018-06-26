@@ -6,7 +6,7 @@ def generate_rollout(env_name="CarRacing-v0"):
     env = gym.make(env_name)
     frames = []
     actions = []
-    state = env.reset()
+
     # frame = Image.fromarray(state, 'RGB')
     # frames.append(frame)
     # s = env.render("rgb_array")
@@ -20,13 +20,15 @@ def generate_rollout(env_name="CarRacing-v0"):
     #     a = env.action_space.sample()
     #     print(a[None, :])
     counter = 0
-    while not done:
-        env.render()
-        action = env.action_space.sample()
-        # action = [-1, 1, 1]
-        # print(env)
-        # print(action)
-        state, r, done, _ = env.step(action)
+    while True:
+        state = env.reset()
+        for _ in range(150):
+            env.render()
+            action = env.action_space.sample()
+            # action = [-1, 1, 1]
+            # print(env)
+            # print(action)
+            state, r, done, _ = env.step(action)
         # frame = Image.fromarray(state, 'RGB')
         # frames.append([action, frame])
         # print('counter:', counter)

@@ -57,7 +57,7 @@ if __name__ == "__main__":
     M.cpu()
     M.train(False)
 
-    a = np.array([0.0, 1.0, 0.0])
+    a = np.array([0.0, 0.0, 0.0])
 
 
 
@@ -118,7 +118,7 @@ if __name__ == "__main__":
 
             z = z_pre
             # input('wait')
-            a = np.array([0.0, 1.0, 0.0])
+            a = np.random.random(3)
     #     total_reward = 0.0
     #     steps = 0
     #     restart = False

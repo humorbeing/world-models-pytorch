@@ -150,7 +150,16 @@ class MM(nn.Module):
         return mus, sigmas, pis, hs
 class MDNRNN(nn.Module):
     def __init__(self, z_dim=32, action_dim=3, hidden_size=256, n_mixture=5, temperature=0.0):
-
+        """
+            :param z_dim: the dimension of VAE latent variable
+            :param hidden_size: hidden size of RNN
+            :param n_mixture: number of Gaussian Mixture Models to be used
+            :param temperature: controls the randomness of the model
+            MDNRNN stands for Mixture Density Network - RNN.
+            The output of this model is [mean, sigma^2, K],
+            where mean and sigma^2 have z_dim * n_mixture elements and
+            K has n_mixture elements.
+        """
         super(MDNRNN, self).__init__()
         # define rnn
         self.inpt_size = z_dim + action_dim
@@ -166,7 +175,12 @@ class MDNRNN(nn.Module):
     #     hidden_state = (Variable(inpt.data.new(1, batch_size, self.hidden_size)),
     #                     Variable(inpt.data.new(1, batch_size, self.hidden_size)))
     def forward(self, inpt, action, hidden_state=None):
-
+        """
+        :param inpt: a tensor of size (batch_size, seq_len, D)
+        :param hidden_state: two tensors of size (1, batch_size, hidden_size)
+        :param action: a tensor of (batch_size, seq_len, action_dim)
+        :return: pi, mean, sigma, hidden_state
+        """
         batch_size, seq_len, _ = inpt.size()
         if hidden_state is None:
             # use new so that we do not need to know the tensor type explicitly.
@@ -246,9 +260,6 @@ def mdn_criterion(mus,sigmas,pis,label):
         # print(likelihood_z_x.shape)
         losses += prior_z * likelihood_z_x
     loss = torch.mean(-torch.log(losses))
-    # print(loss.shape)
-    # print(loss)
-    # input('wait')
     return loss
     '''
     print('label:', label.shape)
@@ -327,8 +338,6 @@ if __name__ == "__main__":
             # print(hs.detach().numpy().shape)
             # input('wait')
             loss = mdn_criterion(mus, sigmas, pis, label)
-            # print(loss.shape)
-            # input('wait')
             # losses.append(loss.data[0])
 
             # print(loss.data[0])
